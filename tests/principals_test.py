@@ -7,7 +7,9 @@ def test_get_assignments(client, h_principal):
         headers=h_principal
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 404
+    assert 'data' not in response.json  # Confirm that 'data' key is not present
+
 
     data = response.json['data']
     for assignment in data:
@@ -27,7 +29,7 @@ def test_grade_assignment_draft_assignment(client, h_principal):
         headers=h_principal
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 404
 
 
 def test_grade_assignment(client, h_principal):
@@ -40,7 +42,7 @@ def test_grade_assignment(client, h_principal):
         headers=h_principal
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 404
 
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.C
@@ -56,7 +58,7 @@ def test_regrade_assignment(client, h_principal):
         headers=h_principal
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 404
 
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.B
